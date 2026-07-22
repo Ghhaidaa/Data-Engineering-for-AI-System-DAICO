@@ -1,0 +1,10 @@
+kafka-python
+pydantic
+pyspark
+delta-spark
+apache-airflow
+great-expectations
+openlineage-python
+sentence-transformers
+chromadb
+rank-bm25
