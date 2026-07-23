@@ -79,7 +79,7 @@ A **Great Expectations 1.x** validator (fluent API — ephemeral context, pandas
 All results are combined into a single `all_passed` decision, then persisted to `/content/quality_gate_result.json` so the Airflow task can read it independently of the notebook's in-memory state. The failure path is proven separately: a corrupted copy of Silver (invalid `language` value) is validated and confirmed to FAIL.
 
 ## 5. Orchestration and lineage
-
+start → data_ingestion → delta_lakehouse → quality_gate → rag_pipeline → end
 The DAG (`sdaia_books_pipeline`) is written to `/root/airflow/dags/sdaia_books_dag.py` so Airflow can serialize and execute it. The `quality_gate` task reads `quality_gate_result.json` and raises an exception if `all_passed` is `False` — with Airflow's default `all_success` trigger rule, `rag_pipeline` and `end` are then never executed. This is proven by running `airflow dags test` twice: once against a passing result, once against a forced failure.
 
 Each stage — Ingestion, Lakehouse, Quality Gate, RAG — emits real `openlineage-python` `RunEvent`s (START / COMPLETE / FAIL) via `OpenLineageClient` with a `ConsoleTransport`, under the namespace `sdaia-books-platform`.
