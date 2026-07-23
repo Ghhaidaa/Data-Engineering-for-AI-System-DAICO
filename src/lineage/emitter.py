@@ -11,13 +11,12 @@ import uuid
 ol_client = OpenLineageClient(transport=ConsoleTransport(ConsoleConfig()))
 
 
-def emit_lineage_event(job_name: str, event_type: str, run_id: str = None):
+def emit_lineage_event(job_name: str, event_type: str, run_id: str = None, facets: dict = None):
     """
     Emit a real OpenLineage RunEvent.
     event_type must be one of: START, COMPLETE, FAIL
     """
     run_id = run_id or str(uuid.uuid4())
-
     event = RunEvent(
         eventType=getattr(RunState, event_type),
         eventTime=datetime.now(timezone.utc).isoformat(),
@@ -25,6 +24,5 @@ def emit_lineage_event(job_name: str, event_type: str, run_id: str = None):
         job=Job(namespace="sdaia-books-platform", name=job_name),
         producer="sdaia-books-platform-pipeline",
     )
-
     ol_client.emit(event)
     return run_id
