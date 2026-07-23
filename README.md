@@ -201,23 +201,32 @@ A successful run produces, in order:
 | Orchestration | `airflow dags test` succeeds end-to-end on valid data; on forced-failure data, `quality_gate` fails and `rag_pipeline`/`end` never run |
 
 ## Repository Structure
+
+```
 ├── notebooks/
-│ └── SDAIA_Books_Platform.ipynb # Full executed pipeline (all stages)
+│   └── SDAIA_Books_Platform.ipynb   # Full executed pipeline (all stages)
 │
 ├── src/
-│ ├── schemas/
-│ │ └── book_record.py # Pydantic data contract
-│ ├── lineage/
-│ │ └── emitter.py # OpenLineage START / COMPLETE / FAIL
-│ └── quality/
-│ └── expectations.py # Great Expectations checks reference
+│   ├── schemas/
+│   │   └── book_record.py           # Pydantic data contract
+│   ├── producers/
+│   │   └── kafka_producer.py        # Kafka producer
+│   ├── consumers/
+│   │   └── kafka_consumer.py        # Kafka consumer
+│   ├── lineage/
+│   │   └── emitter.py               # OpenLineage START / COMPLETE / FAIL
+│   ├── quality/
+│   │   └── expectations.py          # Great Expectations checks
+│   └── rag/
+│       └── rag_pipeline.py          # Chunking, embeddings, hybrid search, reranking
 │
 ├── docs/
-│ └── architecture.md # Design rationale and component detail
+│   └── architecture.md              # Design rationale and component detail
 │
 ├── requirements.txt
 ├── .gitignore
 └── README.md
+```
 ## Training Attribution
 
 Completed as part of **Modern Data Engineering for AI Systems** — SDAIA Academy
