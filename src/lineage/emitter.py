@@ -11,7 +11,7 @@ import uuid
 ol_client = OpenLineageClient(transport=ConsoleTransport(ConsoleConfig()))
 
 
-def emit_lineage_event(job_name: str, event_type: str, run_id: str = None, facets: dict = None):
+def emit_lineage_event(job_name: str, event_type: str, run_id: str = None):
     """
     Emit a real OpenLineage RunEvent.
     event_type must be one of: START, COMPLETE, FAIL
